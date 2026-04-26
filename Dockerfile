@@ -2,7 +2,6 @@ FROM python:3.10-slim
 
 WORKDIR /app
 
-# CÀI THƯ VIỆN HỆ THỐNG CHO DLIB
 RUN apt-get update && apt-get install -y \
     build-essential \
     cmake \
@@ -18,4 +17,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-CMD ["sh", "-c", "gunicorn app:app --bind 0.0.0.0:$PORT"]
+# fallback nếu PORT không tồn tại
+ENV PORT=8080
+
+CMD ["sh", "-c", "gunicorn app:app --bind 0.0.0.0:${PORT}"]
